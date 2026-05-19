@@ -33,6 +33,22 @@
   ],
   "items": [
     {
+      "title": "Youtube Learn to Leap",
+      "slug": "youtube-learn-to-leap",
+      "category": "web",
+      "url": "https://www.youtube.com/@learntoleapedu.2023/videos",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-19",
+      "tags": [],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impct1k8f",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "Fanpage Learn to Leap",
       "slug": "fanpage-learn-to-leap",
       "category": "web",
