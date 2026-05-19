@@ -33,6 +33,24 @@
   ],
   "items": [
     {
+      "title": "SaleKits Robotics AI Lab theo mô hình XHH",
+      "slug": "salekits-robotics-ai-lab-theo-mo-hinh-xhh",
+      "category": "drive",
+      "url": "https://drive.google.com/file/d/1yE2_gc0KPlSLeC7nHAM2xqCpsvEDVEx9/view?usp=drive_link",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-19",
+      "tags": [
+        "salekit"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impcqp3fp",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "Brochure UGOT VIE",
       "slug": "brochure-ugot-vie",
       "category": "drive",
