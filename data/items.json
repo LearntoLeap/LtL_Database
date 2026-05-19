@@ -33,6 +33,24 @@
   ],
   "items": [
     {
+      "title": "TVC Learn to Leap",
+      "slug": "tvc-learn-to-leap",
+      "category": "youtube",
+      "url": "https://www.youtube.com/watch?v=FfcxoEC62kY",
+      "description": "",
+      "source": "YT Learn to Leap",
+      "publishedAt": "2026-05-19",
+      "tags": [
+        "video"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": true,
+      "id": "impcsv5l8",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "Chương trình Trải nghiệm \"TỔ QUỐC TRONG TIM\" cho các bạn học sinh Vinschool | Learn to Leap x Tuệ An",
       "slug": "chuong-trinh-trai-nghiem-to-quoc-trong-tim-cho-cac-ban-hoc-sinh-vinschool-learn-to-leap-x-tue-an",
       "category": "youtube",
