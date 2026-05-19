@@ -33,6 +33,25 @@
   ],
   "items": [
     {
+      "title": "Hồ sơ Năng lực LTL 2025",
+      "slug": "ho-so-nang-luc-ltl-2025",
+      "category": "drive",
+      "url": "https://drive.google.com/file/d/13W3tzMK7N_h0Y-hzDZfkUorModXwtePi/view?usp=drive_link",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-19",
+      "tags": [
+        "phap-ly",
+        "salekit"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impcqib7s",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "Đăng ký Kinh doanh Công ty Cổ phần Công nghệ Giáo dục Learn to Leap",
       "slug": "dang-ky-kinh-doanh-cong-ty-co-phan-cong-nghe-giao-duc-learn-to-leap",
       "category": "phaply",
