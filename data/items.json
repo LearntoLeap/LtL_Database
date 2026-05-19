@@ -33,6 +33,24 @@
   ],
   "items": [
     {
+      "title": "Giấy phép Trung tâm_Hà Nội",
+      "slug": "giay-phep-trung-tam-ha-noi",
+      "category": "drive",
+      "url": "https://drive.google.com/file/d/1y6OV0y5LpSO5G3IeSfSyPIzyRwJ2ttMq/view?usp=drive_link",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-19",
+      "tags": [
+        "phap-ly"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impcqlozo",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "Hồ sơ Giới thiệu_Hà Nội",
       "slug": "ho-so-gioi-thieu-ha-noi",
       "category": "drive",
