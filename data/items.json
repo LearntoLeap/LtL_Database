@@ -33,6 +33,25 @@
   ],
   "items": [
     {
+      "title": "Ngày hội trải nghiệm công nghệ STEM - AI - Robotics tại Trường THCS Thanh Trì | Learn to Leap",
+      "slug": "ngay-hoi-trai-nghiem-cong-nghe-stem-ai-robotics-tai-truong-thcs-thanh-tri-learn-to-leap",
+      "category": "youtube",
+      "url": "youtube.com/watch?v=g8VOLiwarqQ&list=PLDDV3BdaNM1iJXaTGAVvSsqkvfeaH2Y5Q&index=2",
+      "description": "",
+      "source": "YT Learn to Leap",
+      "publishedAt": "2025-08-25",
+      "tags": [
+        "ha-noi",
+        "trai-nghiem"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impcs373b",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "Học sinh Vĩnh Hưng (Hà Nội) làm chủ tương lai với Ngày hội STEM - AI - Robotics | Learn to Leap",
       "slug": "hoc-sinh-vinh-hung-ha-noi-lam-chu-tuong-lai-voi-ngay-hoi-stem-ai-robotics-learn-to-leap",
       "category": "youtube",
