@@ -293,6 +293,136 @@ async function saveItem() {
   }
 }
 
+// ============== Categories management ==============
+function openCatModal() {
+  renderCatList();
+  document.getElementById('newCatId').value = '';
+  document.getElementById('newCatIcon').value = '';
+  document.getElementById('newCatName').value = '';
+  document.getElementById('newCatDesc').value = '';
+  document.getElementById('catMsg').classList.add('hidden');
+  const m = document.getElementById('catModal');
+  m.classList.remove('hidden'); m.classList.add('flex');
+}
+function closeCatModal() {
+  const m = document.getElementById('catModal');
+  m.classList.add('hidden'); m.classList.remove('flex');
+}
+window.closeCatModal = closeCatModal;
+
+function catUsageCount(catId) {
+  return ADMIN.data.items.filter(i => i.category === catId).length;
+}
+
+function renderCatList() {
+  const list = document.getElementById('catList');
+  list.innerHTML = '';
+  if (!ADMIN.data.categories.length) {
+    list.innerHTML = '<p class="text-slate-500 text-sm">Chưa có category nào.</p>';
+    return;
+  }
+  ADMIN.data.categories.forEach((c, idx) => {
+    const used = catUsageCount(c.id);
+    const row = document.createElement('div');
+    row.className = 'grid grid-cols-12 gap-2 items-center bg-slate-50 rounded-lg p-2';
+    row.innerHTML = `
+      <div class="col-span-3 text-xs text-slate-500">
+        <code>${escapeHtml(c.id)}</code>
+        <span class="ml-1 text-amber-700">${used > 0 ? `· ${used} mục` : ''}</span>
+      </div>
+      <input data-i="${idx}" data-k="icon" value="${escapeHtml(c.icon || '')}" class="col-span-1 border rounded px-1.5 py-1 text-sm text-center">
+      <input data-i="${idx}" data-k="name" value="${escapeHtml(c.name || '')}" class="col-span-4 border rounded px-2 py-1 text-sm">
+      <input data-i="${idx}" data-k="description" value="${escapeHtml(c.description || '')}" placeholder="Mô tả" class="col-span-3 border rounded px-2 py-1 text-sm">
+      <div class="col-span-1 flex gap-1 justify-end">
+        <button data-up="${idx}"  class="px-1.5 py-1 border rounded text-xs hover:bg-white" title="Lên">↑</button>
+        <button data-dn="${idx}"  class="px-1.5 py-1 border rounded text-xs hover:bg-white" title="Xuống">↓</button>
+        <button data-del="${idx}" class="px-1.5 py-1 border border-red-200 text-red-600 rounded text-xs hover:bg-red-50" title="Xoá">🗑</button>
+      </div>`;
+    list.appendChild(row);
+  });
+
+  list.querySelectorAll('input[data-i]').forEach(inp => {
+    inp.onchange = async () => {
+      const i = +inp.dataset.i, k = inp.dataset.k;
+      ADMIN.data.categories[i][k] = inp.value.trim();
+      await saveCats(`Update category: ${ADMIN.data.categories[i].id}.${k}`);
+    };
+  });
+  list.querySelectorAll('button[data-up]').forEach(b => b.onclick = () => moveCat(+b.dataset.up, -1));
+  list.querySelectorAll('button[data-dn]').forEach(b => b.onclick = () => moveCat(+b.dataset.dn,  1));
+  list.querySelectorAll('button[data-del]').forEach(b => b.onclick = () => deleteCat(+b.dataset.del));
+}
+
+async function saveCats(msg) {
+  try {
+    await saveData(msg);
+    refreshCatSelects();
+    renderAdmin();
+  } catch (e) {
+    setCatMsg('Lỗi: ' + e.message, true);
+  }
+}
+
+function refreshCatSelects() {
+  const adminCat = document.getElementById('adminCat');
+  const fCat = document.getElementById('fCategory');
+  const curA = adminCat.value, curF = fCat.value;
+  adminCat.innerHTML = '<option value="">Tất cả danh mục</option>';
+  fCat.innerHTML = '';
+  ADMIN.data.categories.forEach(c => {
+    const o1 = document.createElement('option'); o1.value = c.id; o1.textContent = `${c.icon} ${c.name}`; adminCat.appendChild(o1);
+    const o2 = document.createElement('option'); o2.value = c.id; o2.textContent = `${c.icon} ${c.name}`; fCat.appendChild(o2);
+  });
+  adminCat.value = curA;
+  if (ADMIN.data.categories.find(c => c.id === curF)) fCat.value = curF;
+}
+
+async function moveCat(i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= ADMIN.data.categories.length) return;
+  const arr = ADMIN.data.categories;
+  [arr[i], arr[j]] = [arr[j], arr[i]];
+  renderCatList();
+  await saveCats('Reorder categories');
+}
+
+async function deleteCat(i) {
+  const c = ADMIN.data.categories[i];
+  const used = catUsageCount(c.id);
+  if (used > 0) {
+    setCatMsg(`Không thể xoá "${c.name}" — còn ${used} mục đang dùng. Hãy chuyển/xoá hết mục trước.`, true);
+    return;
+  }
+  if (!confirm(`Xoá category "${c.name}"?`)) return;
+  ADMIN.data.categories.splice(i, 1);
+  renderCatList();
+  await saveCats('Delete category: ' + c.id);
+}
+
+async function addCat() {
+  const id   = slugify(document.getElementById('newCatId').value);
+  const icon = document.getElementById('newCatIcon').value.trim();
+  const name = document.getElementById('newCatName').value.trim();
+  const desc = document.getElementById('newCatDesc').value.trim();
+  if (!id || !name) return setCatMsg('Cần nhập id và tên.', true);
+  if (ADMIN.data.categories.find(c => c.id === id)) return setCatMsg('ID đã tồn tại.', true);
+  ADMIN.data.categories.push({ id, name, icon: icon || '🔗', description: desc });
+  renderCatList();
+  document.getElementById('newCatId').value = '';
+  document.getElementById('newCatIcon').value = '';
+  document.getElementById('newCatName').value = '';
+  document.getElementById('newCatDesc').value = '';
+  await saveCats('Add category: ' + id);
+  setCatMsg('Đã thêm category "' + name + '".', false);
+}
+
+function setCatMsg(text, isErr) {
+  const el = document.getElementById('catMsg');
+  el.textContent = text;
+  el.className = 'text-sm mt-2 ' + (isErr ? 'text-red-600' : 'text-emerald-600');
+  el.classList.remove('hidden');
+}
+
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 }
@@ -317,6 +447,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btnLogout').onclick = logout;
   document.getElementById('btnReload').onclick = reloadData;
   document.getElementById('btnAdd').onclick = () => openEditor(null);
+  document.getElementById('btnManageCats').onclick = openCatModal;
+  document.getElementById('btnAddCat').onclick = addCat;
+  document.getElementById('catModal').addEventListener('click', e => { if (e.target.id === 'catModal') closeCatModal(); });
   document.getElementById('btnSave').onclick = saveItem;
   document.getElementById('fUrl').addEventListener('input', updateUrlHint);
   document.getElementById('adminQ').addEventListener('input', e => { ADMIN.filterQ = e.target.value; renderAdmin(); });

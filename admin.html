@@ -66,6 +66,7 @@
       </div>
       <div class="flex gap-2">
         <button id="btnReload" class="bg-white border px-3 py-1.5 rounded-lg text-sm hover:bg-slate-50">↻ Tải lại</button>
+        <button id="btnManageCats" class="bg-white border px-3 py-1.5 rounded-lg text-sm hover:bg-slate-50">🗂 Categories</button>
         <button id="btnAdd" class="bg-brand-600 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-brand-700">➕ Thêm mục</button>
       </div>
     </div>
@@ -79,6 +80,32 @@
 
     <div id="adminList" class="space-y-2"></div>
   </section>
+
+  <!-- CATEGORIES MODAL -->
+  <div id="catModal" class="fixed inset-0 hidden z-50 modal-backdrop items-start justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-xl max-w-2xl w-full p-6 my-4">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-bold text-lg">🗂 Quản lý Categories</h3>
+        <button onclick="closeCatModal()" class="text-slate-500 hover:text-slate-800">✕</button>
+      </div>
+
+      <p class="text-xs text-slate-500 mb-3">Mỗi thay đổi sẽ commit ngay vào <code>data/items.json</code>. Không thể xoá category đang có mục — phải đổi/xoá hết mục trước.</p>
+
+      <div id="catList" class="space-y-2 mb-4"></div>
+
+      <div class="border-t pt-4">
+        <h4 class="font-semibold text-sm mb-2">➕ Thêm category mới</h4>
+        <div class="grid grid-cols-12 gap-2">
+          <input id="newCatId"   placeholder="id (vd: podcast)"     class="col-span-3 border rounded-lg px-2 py-1.5 text-sm">
+          <input id="newCatIcon" placeholder="🎙"                    class="col-span-1 border rounded-lg px-2 py-1.5 text-sm text-center">
+          <input id="newCatName" placeholder="Tên hiển thị"          class="col-span-4 border rounded-lg px-2 py-1.5 text-sm">
+          <input id="newCatDesc" placeholder="Mô tả (tuỳ chọn)"      class="col-span-3 border rounded-lg px-2 py-1.5 text-sm">
+          <button id="btnAddCat" class="col-span-1 bg-brand-600 text-white rounded-lg text-sm hover:bg-brand-700">+</button>
+        </div>
+        <p id="catMsg" class="text-sm mt-2 hidden"></p>
+      </div>
+    </div>
+  </div>
 
   <!-- EDITOR MODAL -->
   <div id="editor" class="fixed inset-0 hidden z-50 modal-backdrop items-start justify-center p-4 overflow-y-auto">
