@@ -33,6 +33,24 @@
   ],
   "items": [
     {
+      "title": "Brochure STEM AI Lab",
+      "slug": "brochure-stem-ai-lab",
+      "category": "drive",
+      "url": "https://drive.google.com/file/d/1uO8XFkapU-2PF7UbXE2jhDgGGEjetjQ6/view?usp=drive_link",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-19",
+      "tags": [
+        "brochure"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impcqqtws",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "Brochure Giải pháp của Learn to Leap",
       "slug": "brochure-giai-phap-cua-learn-to-leap",
       "category": "drive",
