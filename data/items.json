@@ -1,11 +1,49 @@
 {
   "categories": [
-    { "id": "drive",   "name": "Google Drive",  "icon": "📁", "description": "Tài liệu, file PDF, slides, sheet trên Drive" },
-    { "id": "youtube", "name": "YouTube",        "icon": "▶️", "description": "Video bài giảng, sự kiện, talkshow" },
-    { "id": "press",   "name": "Báo chí / PR",   "icon": "📰", "description": "Bài báo, phóng sự, truyền thông về LtL" },
-    { "id": "web",     "name": "Website / Khác", "icon": "🔗", "description": "Landing page, microsite, link ngoài" }
+    {
+      "id": "drive",
+      "name": "Google Drive",
+      "icon": "📁",
+      "description": "Tài liệu, file PDF, slides, sheet trên Drive"
+    },
+    {
+      "id": "youtube",
+      "name": "YouTube",
+      "icon": "▶️",
+      "description": "Video bài giảng, sự kiện, talkshow"
+    },
+    {
+      "id": "press",
+      "name": "Báo chí / PR",
+      "icon": "📰",
+      "description": "Bài báo, phóng sự, truyền thông về LtL"
+    },
+    {
+      "id": "web",
+      "name": "Website / Khác",
+      "icon": "🔗",
+      "description": "Landing page, microsite, link ngoài"
+    }
   ],
   "items": [
+    {
+      "title": "Đăng ký Kinh doanh Công ty Cổ phần Công nghệ Giáo dục Learn to Leap",
+      "slug": "dang-ky-kinh-doanh-cong-ty-co-phan-cong-nghe-giao-duc-learn-to-leap",
+      "category": "drive",
+      "url": "https://drive.google.com/file/d/1MuvUBmxSc-eIeyl9M5K0cjKAa_aKA2tB/view?usp=drive_link",
+      "description": "ĐKKD Công ty Cổ phần",
+      "source": "",
+      "publishedAt": "2026-05-19",
+      "tags": [
+        "phap-ly"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impcqcs9c",
+      "createdAt": "2026-05-19"
+    },
     {
       "id": "smp001",
       "title": "Hồ sơ năng lực Learn to Leap (mẫu)",
@@ -16,7 +54,11 @@
       "thumbnail": "",
       "showThumbnail": true,
       "previewable": true,
-      "tags": ["hồ sơ", "B2B", "trường học"],
+      "tags": [
+        "hồ sơ",
+        "B2B",
+        "trường học"
+      ],
       "source": "Learn to Leap",
       "publishedAt": "2026-05-01",
       "createdAt": "2026-05-19",
