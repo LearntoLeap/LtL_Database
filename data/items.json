@@ -33,6 +33,25 @@
   ],
   "items": [
     {
+      "title": "Chương trình Trải nghiệm tại Trường Phổ thông Liên cấp Hermann Gmeiner",
+      "slug": "chuong-trinh-trai-nghiem-tai-truong-pho-thong-lien-cap-hermann-gmeiner",
+      "category": "youtube",
+      "url": "https://www.youtube.com/watch?v=pP3PlB0bv2M&t=1s",
+      "description": "",
+      "source": "YT Learn to Leap",
+      "publishedAt": "2025-12-25",
+      "tags": [
+        "video",
+        "trai-nghiem"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impcsx5d4",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "Truyền hình Thái Nguyên đưa tin về Sân chơi STEM – AI – Robotics 2026",
       "slug": "truyen-hinh-thai-nguyen-dua-tin-ve-san-choi-stem-ai-robotics-2026",
       "category": "youtube",
