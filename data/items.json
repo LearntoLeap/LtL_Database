@@ -33,6 +33,25 @@
   ],
   "items": [
     {
+      "title": "Chương trình Trải nghiệm \"TỔ QUỐC TRONG TIM\" cho các bạn học sinh Vinschool | Learn to Leap x Tuệ An",
+      "slug": "chuong-trinh-trai-nghiem-to-quoc-trong-tim-cho-cac-ban-hoc-sinh-vinschool-learn-to-leap-x-tue-an",
+      "category": "youtube",
+      "url": "https://www.youtube.com/watch?v=1p6UrP1w_wE",
+      "description": "",
+      "source": "YT Learn to Leap",
+      "publishedAt": "2026-12-25",
+      "tags": [
+        "video",
+        "trai-nghiem"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impcsu4i7",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "Hơn 500 học sinh tại Nghệ An tiếp cận công nghệ tương lai tại \"Ngày hội trải nghiệm STEM - Robotics - AI\"",
       "slug": "hon-500-hoc-sinh-tai-nghe-an-tiep-can-cong-nghe-tuong-lai-tai-ngay-hoi-trai-nghiem-stem-robotics-ai",
       "category": "press",
