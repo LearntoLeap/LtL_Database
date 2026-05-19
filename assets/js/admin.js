@@ -31,7 +31,13 @@ async function ghPut(path, contentBase64, sha, message) {
     headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
     body: JSON.stringify(body)
   });
-  if (!r.ok) throw new Error('PUT fail ' + r.status + ' ' + await r.text());
+  if (!r.ok) {
+    const txt = await r.text();
+    if (r.status === 403) {
+      throw new Error('PUT 403 — PAT không có quyền ghi. Kiểm tra: (1) Permission "Contents: Read and write"; (2) Resource owner = LearntoLeap; (3) Org đã approve PAT (chủ org vào Settings → PAT → Pending requests). Hoặc dùng Classic PAT scope "repo".');
+    }
+    throw new Error('PUT fail ' + r.status + ' ' + txt);
+  }
   return r.json();
 }
 
