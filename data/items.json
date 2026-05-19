@@ -33,6 +33,26 @@
   ],
   "items": [
     {
+      "title": "Khung chương trình UGOT cấp THCS",
+      "slug": "khung-chuong-trinh-ugot-cap-thcs",
+      "category": "drive",
+      "url": "https://drive.google.com/file/d/1rffAT-9fUHgMKhRKXjVMhqFlsmLeX1gf/view?usp=drive_link",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-19",
+      "tags": [
+        "chuong-trinh",
+        "thcs",
+        "ugot"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impcqn7vp",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "Giấy chứng nhận Kết quả Đánh giá Chương trình \"Giáo dục STEM AI và học liệu số cho học sinh phổ thông\"",
       "slug": "giay-chung-nhan-ket-qua-danh-gia-chuong-trinh-giao-duc-stem-ai-va-hoc-lieu-so-cho-hoc-sinh-pho-thong",
       "category": "phaply",
