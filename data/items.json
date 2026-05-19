@@ -23,6 +23,12 @@
       "name": "Website / Khác",
       "icon": "🔗",
       "description": "Landing page, microsite, link ngoài"
+    },
+    {
+      "id": "phaply",
+      "name": "Pháp lý",
+      "icon": "🧾",
+      "description": "Giấy tờ Pháp lý của LTL"
     }
   ],
   "items": [
