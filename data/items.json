@@ -33,6 +33,25 @@
   ],
   "items": [
     {
+      "title": "Brochure UGOT VIE",
+      "slug": "brochure-ugot-vie",
+      "category": "drive",
+      "url": "https://drive.google.com/file/d/1B5SM-KoQY4iHJSf5GVADgM_UErDrTv32/view?usp=drive_link",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-19",
+      "tags": [
+        "ugot",
+        "salekit"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impcqojik",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "Khung chương trình AI uKit cấp Tiểu học",
       "slug": "khung-chuong-trinh-ai-ukit-cap-tieu-hoc",
       "category": "drive",
