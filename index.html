@@ -23,46 +23,81 @@
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
 <header class="bg-gradient-to-r from-brand-700 to-brand-500 text-white shadow">
-  <div class="max-w-6xl mx-auto px-4 py-5 flex items-center justify-between gap-4">
-    <div>
-      <h1 class="text-2xl font-bold">LtL Database</h1>
-      <p class="text-sm opacity-90">Thư viện liên kết tài liệu của Learn to Leap</p>
+  <div class="max-w-7xl mx-auto px-4 py-5 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <button id="btnSidebar" class="md:hidden bg-white/15 hover:bg-white/25 rounded-lg w-9 h-9" aria-label="Mở menu">☰</button>
+      <div>
+        <h1 class="text-2xl font-bold">LtL Database</h1>
+        <p class="text-sm opacity-90">Thư viện liên kết tài liệu của Learn to Leap</p>
+      </div>
     </div>
     <a href="admin.html" class="text-sm bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-lg">⚙️ Admin</a>
   </div>
 </header>
 
-<main class="flex-1 max-w-6xl mx-auto w-full px-4 py-6">
+<main class="flex-1 max-w-7xl mx-auto w-full px-4 py-6 flex gap-6">
 
-  <!-- Search + filters -->
-  <div class="bg-white rounded-xl shadow-sm p-4 mb-6 flex flex-col md:flex-row gap-3">
-    <input id="q" type="search" placeholder="🔍 Tìm theo tên, tag, nguồn…"
-           class="flex-1 border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500">
-    <select id="catFilter" class="border border-slate-200 rounded-lg px-3 py-2">
-      <option value="">Tất cả danh mục</option>
-    </select>
-    <select id="sortBy" class="border border-slate-200 rounded-lg px-3 py-2">
-      <option value="newest">Mới nhất</option>
-      <option value="title">Theo tên A→Z</option>
-      <option value="featured">Nổi bật trước</option>
-    </select>
+  <!-- SIDEBAR TREE -->
+  <aside id="sidebar" class="w-72 shrink-0 hidden md:block">
+    <div class="bg-white rounded-xl shadow-sm sticky top-4 max-h-[85vh] flex flex-col">
+      <div class="p-3 border-b">
+        <h2 class="font-bold text-sm flex items-center justify-between">
+          <span>📂 Cây thư mục</span>
+          <button id="btnSidebarClose" class="md:hidden text-slate-400">✕</button>
+        </h2>
+        <div class="flex gap-2 mt-2 text-xs text-slate-500">
+          <button id="treeExpandAll"   class="hover:text-brand-700 hover:underline">Mở hết</button>
+          <span>·</span>
+          <button id="treeCollapseAll" class="hover:text-brand-700 hover:underline">Đóng hết</button>
+          <span>·</span>
+          <button id="treeClearSel"    class="hover:text-brand-700 hover:underline">Bỏ chọn</button>
+        </div>
+      </div>
+      <div id="tree" class="flex-1 overflow-y-auto p-2 text-sm"></div>
+      <div id="treeCopyBar" class="hidden p-3 border-t bg-brand-50/60 rounded-b-xl">
+        <button id="btnCopyMulti" class="w-full bg-brand-600 text-white rounded-lg py-2 text-sm hover:bg-brand-700">
+          📋 Copy <span id="selCount">0</span> link đã chọn
+        </button>
+        <p class="text-[10px] text-slate-500 mt-1 text-center">Định dạng: <code>[Tên]: [Link]</code></p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="flex-1 min-w-0">
+    <!-- Search + filters -->
+    <div class="bg-white rounded-xl shadow-sm p-4 mb-6 flex flex-col md:flex-row gap-3">
+      <input id="q" type="search" placeholder="🔍 Tìm theo tên, tag, nguồn…"
+             class="flex-1 border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500">
+      <select id="catFilter" class="border border-slate-200 rounded-lg px-3 py-2">
+        <option value="">Tất cả danh mục</option>
+      </select>
+      <select id="sortBy" class="border border-slate-200 rounded-lg px-3 py-2">
+        <option value="newest">Mới nhất</option>
+        <option value="title">Theo tên A→Z</option>
+        <option value="featured">Nổi bật trước</option>
+      </select>
+    </div>
+
+    <!-- Category chips -->
+    <div id="catChips" class="flex flex-wrap gap-2 mb-6"></div>
+
+    <!-- Grid -->
+    <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5"></div>
+
+    <p id="empty" class="hidden text-center text-slate-500 py-10">Không có mục nào phù hợp.</p>
   </div>
-
-  <!-- Category chips -->
-  <div id="catChips" class="flex flex-wrap gap-2 mb-6"></div>
-
-  <!-- Grid -->
-  <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-
-  <p id="empty" class="hidden text-center text-slate-500 py-10">Không có mục nào phù hợp.</p>
 </main>
 
 <footer class="bg-white border-t border-slate-200 mt-auto">
-  <div class="max-w-6xl mx-auto px-4 py-4 text-xs text-slate-500 flex justify-between">
+  <div class="max-w-7xl mx-auto px-4 py-4 text-xs text-slate-500 flex justify-between">
     <span>© Learn to Leap — LtL Database</span>
     <span id="count"></span>
   </div>
 </footer>
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 hidden bg-slate-900 text-white text-sm px-4 py-2 rounded-lg shadow-lg z-50"></div>
 
 <!-- Preview modal -->
 <div id="preview" class="fixed inset-0 hidden z-50 modal-backdrop items-center justify-center p-4">
@@ -78,6 +113,6 @@
   </div>
 </div>
 
-<script src="assets/js/app.js"></script>
+<script src="assets/js/app.js?v=3"></script>
 </body>
 </html>

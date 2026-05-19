@@ -1,6 +1,6 @@
 // LtL Database — Public storefront logic
 const DATA_PATH = 'data/items.json';
-const STATE = { data: null, filtered: [], cat: '', q: '', sort: 'newest' };
+const STATE = { data: null, filtered: [], cat: '', q: '', sort: 'newest', openCats: new Set(), selected: new Set() };
 
 // ============== URL helpers (preview + thumbnail) ==============
 function detectKind(url) {
@@ -117,6 +117,7 @@ function applyFilters() {
   STATE.filtered = items;
   renderGrid();
   renderCategoryFilter(); // refresh chip highlight
+  renderTree();
 }
 
 function renderGrid() {
@@ -155,13 +156,15 @@ function renderGrid() {
         ${(item.tags || []).length ? `<div class="flex flex-wrap gap-1 mt-1">${item.tags.map(t => `<span class="text-xs bg-slate-100 text-slate-600 rounded px-1.5 py-0.5">#${escapeHtml(t)}</span>`).join('')}</div>` : ''}
         <div class="flex gap-2 mt-auto pt-3">
           ${canPreview ? `<button class="btn-pv flex-1 bg-brand-600 text-white text-sm px-3 py-2 rounded-lg hover:bg-brand-700">👁 Xem trước</button>` : ''}
-          <a href="${item.url}" target="_blank" rel="noopener" class="flex-1 text-center text-sm border border-brand-600 text-brand-700 px-3 py-2 rounded-lg hover:bg-brand-50">↗ Mở link</a>
+          <a href="${item.url}" target="_blank" rel="noopener" class="flex-1 text-center text-sm border border-brand-600 text-brand-700 px-3 py-2 rounded-lg hover:bg-brand-50">↗ Mở</a>
+          <button class="btn-copy text-sm border border-slate-300 text-slate-600 px-3 py-2 rounded-lg hover:bg-slate-50" title="Copy link">📋</button>
         </div>
       </div>`;
 
     if (canPreview) {
       card.querySelector('.btn-pv').onclick = () => openPreview(item);
     }
+    card.querySelector('.btn-copy').onclick = () => copySingleLink(item);
     grid.appendChild(card);
   });
 
@@ -187,6 +190,128 @@ function closePreview() {
 }
 window.closePreview = closePreview;
 
+// ============== Sidebar tree ==============
+function renderTree() {
+  const root = document.getElementById('tree');
+  if (!root) return;
+  root.innerHTML = '';
+
+  // Default: tất cả mở lần đầu
+  if (STATE._treeInit !== true) {
+    STATE.data.categories.forEach(c => STATE.openCats.add(c.id));
+    STATE._treeInit = true;
+  }
+
+  STATE.data.categories.forEach(c => {
+    const items = STATE.data.items.filter(i => i.category === c.id);
+    const isOpen = STATE.openCats.has(c.id);
+    const folder = document.createElement('div');
+    folder.className = 'mb-1';
+
+    const head = document.createElement('button');
+    head.className = 'w-full flex items-center gap-1 hover:bg-slate-50 rounded px-2 py-1 font-medium text-slate-700';
+    head.innerHTML = `
+      <span class="w-3 text-xs text-slate-400">${isOpen ? '▼' : '▶'}</span>
+      <span>${c.icon || '🔗'}</span>
+      <span class="flex-1 text-left truncate">${escapeHtml(c.name)}</span>
+      <span class="text-xs text-slate-400">${items.length}</span>`;
+    head.onclick = () => {
+      if (STATE.openCats.has(c.id)) STATE.openCats.delete(c.id);
+      else STATE.openCats.add(c.id);
+      renderTree();
+    };
+    folder.appendChild(head);
+
+    if (isOpen) {
+      const ul = document.createElement('div');
+      ul.className = 'ml-5 mt-0.5';
+      if (items.length === 0) {
+        ul.innerHTML = '<p class="text-xs text-slate-400 px-2 py-1">— trống —</p>';
+      }
+      items.forEach(item => {
+        const leaf = document.createElement('div');
+        leaf.className = 'group flex items-center gap-1 hover:bg-slate-50 rounded px-1 py-1';
+        const checked = STATE.selected.has(item.id) ? 'checked' : '';
+        leaf.innerHTML = `
+          <input type="checkbox" class="leaf-cb accent-brand-600" ${checked}>
+          <button class="leaf-title flex-1 text-left truncate text-slate-700 hover:text-brand-700" title="${escapeHtml(item.title)}">📄 ${escapeHtml(item.title)}</button>
+          <button class="leaf-copy opacity-0 group-hover:opacity-100 text-slate-400 hover:text-brand-700 px-1" title="Copy link">📋</button>`;
+        leaf.querySelector('.leaf-cb').onchange = e => {
+          if (e.target.checked) STATE.selected.add(item.id); else STATE.selected.delete(item.id);
+          updateCopyBar();
+        };
+        leaf.querySelector('.leaf-title').onclick = () => openItemFromTree(item);
+        leaf.querySelector('.leaf-copy').onclick = () => copySingleLink(item);
+        ul.appendChild(leaf);
+      });
+      folder.appendChild(ul);
+    }
+    root.appendChild(folder);
+  });
+
+  updateCopyBar();
+}
+
+function openItemFromTree(item) {
+  const canPreview = item.previewable !== false && !!previewEmbedUrl(item.url);
+  if (canPreview) openPreview(item);
+  else window.open(item.url, '_blank', 'noopener');
+}
+
+function updateCopyBar() {
+  const bar = document.getElementById('treeCopyBar');
+  const cnt = document.getElementById('selCount');
+  if (!bar) return;
+  if (STATE.selected.size > 0) {
+    bar.classList.remove('hidden');
+    cnt.textContent = STATE.selected.size;
+  } else {
+    bar.classList.add('hidden');
+  }
+}
+
+// ============== Copy helpers ==============
+async function clipboardWrite(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch {}
+    document.body.removeChild(ta);
+    return ok;
+  }
+}
+
+async function copySingleLink(item) {
+  const text = `[${item.title}]: ${item.url}`;
+  const ok = await clipboardWrite(text);
+  toast(ok ? `📋 Đã copy: ${item.title}` : 'Copy thất bại', !ok);
+}
+
+async function copyMulti() {
+  const items = STATE.data.items.filter(i => STATE.selected.has(i.id));
+  if (!items.length) return;
+  const text = items.map(i => `[${i.title}]: ${i.url}`).join('\n');
+  const ok = await clipboardWrite(text);
+  toast(ok ? `📋 Đã copy ${items.length} link` : 'Copy thất bại', !ok);
+}
+
+// ============== Toast ==============
+let toastTimer = null;
+function toast(msg, isErr) {
+  const el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.className = `fixed bottom-6 left-1/2 -translate-x-1/2 text-sm px-4 py-2 rounded-lg shadow-lg z-50 ${isErr ? 'bg-red-600' : 'bg-slate-900'} text-white`;
+  el.classList.remove('hidden');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.add('hidden'), 2200);
+}
+
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 }
@@ -206,4 +331,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('preview').addEventListener('click', e => {
     if (e.target.id === 'preview') closePreview();
   });
+
+  // Sidebar tree controls
+  const sb = document.getElementById('sidebar');
+  document.getElementById('btnSidebar')?.addEventListener('click', () => {
+    sb.classList.toggle('hidden');
+    sb.classList.toggle('fixed');
+    sb.classList.toggle('inset-0');
+    sb.classList.toggle('z-40');
+    sb.classList.toggle('bg-slate-900/50');
+    sb.classList.toggle('p-4');
+  });
+  document.getElementById('btnSidebarClose')?.addEventListener('click', () => {
+    sb.classList.add('hidden');
+    sb.classList.remove('fixed','inset-0','z-40','bg-slate-900/50','p-4');
+  });
+  document.getElementById('treeExpandAll').onclick = () => {
+    STATE.data.categories.forEach(c => STATE.openCats.add(c.id));
+    renderTree();
+  };
+  document.getElementById('treeCollapseAll').onclick = () => {
+    STATE.openCats.clear();
+    renderTree();
+  };
+  document.getElementById('treeClearSel').onclick = () => {
+    STATE.selected.clear();
+    renderTree();
+  };
+  document.getElementById('btnCopyMulti').onclick = copyMulti;
 });
