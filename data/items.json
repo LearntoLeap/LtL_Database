@@ -33,6 +33,25 @@
   ],
   "items": [
     {
+      "title": "Ngày hội STEM – AI: Khơi dậy đam mê công nghệ cho học sinh",
+      "slug": "ngay-hoi-stem-ai-khoi-day-dam-me-cong-nghe-cho-hoc-sinh",
+      "category": "youtube",
+      "url": "https://www.youtube.com/watch?v=Hw6g8QUeFLU",
+      "description": "",
+      "source": "Báo và Phát thanh Truyền hình Thái Nguyên",
+      "publishedAt": "2025-09-19",
+      "tags": [
+        "truyen-hinh",
+        "thai-nguyen"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impcsb3mb",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "Ngày hội STEM – AI – Robotics",
       "slug": "ngay-hoi-stem-ai-robotics",
       "category": "press",
