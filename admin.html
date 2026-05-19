@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LtL Database — Admin</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { colors: { brand: { 50:'#faf5ff', 500:'#a855f7', 600:'#9333ea', 700:'#7e22ce' } } } } }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+<header class="bg-gradient-to-r from-brand-700 to-brand-500 text-white shadow">
+  <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <div>
+      <h1 class="text-xl font-bold">LtL Database — Admin</h1>
+      <p class="text-xs opacity-90">CRUD qua GitHub API</p>
+    </div>
+    <div class="flex gap-2">
+      <a href="index.html" class="text-sm bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-lg">👁 Public view</a>
+      <button id="btnLogout" class="hidden text-sm bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-lg">Đăng xuất</button>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4 py-6">
+
+  <!-- LOGIN -->
+  <section id="loginBox" class="bg-white rounded-xl shadow-sm p-6 max-w-xl mx-auto">
+    <h2 class="font-bold text-lg mb-4">🔐 Đăng nhập GitHub PAT</h2>
+    <div class="space-y-3">
+      <label class="block">
+        <span class="text-sm font-medium">Owner</span>
+        <input id="ghOwner" class="mt-1 w-full border rounded-lg px-3 py-2" value="LearntoLeap">
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium">Repo</span>
+        <input id="ghRepo" class="mt-1 w-full border rounded-lg px-3 py-2" value="LtL_Database">
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium">Branch</span>
+        <input id="ghBranch" class="mt-1 w-full border rounded-lg px-3 py-2" value="main">
+      </label>
+      <label class="block">
+        <span class="text-sm font-medium">Personal Access Token</span>
+        <input id="ghToken" type="password" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="github_pat_…">
+        <span class="text-xs text-slate-500">Fine-grained PAT, scope: Contents Read &amp; Write trên repo này.</span>
+      </label>
+      <label class="flex items-center gap-2 text-sm">
+        <input id="ghRemember" type="checkbox"> Nhớ token (localStorage)
+      </label>
+      <button id="btnLogin" class="w-full bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700">Đăng nhập</button>
+      <p id="loginMsg" class="text-sm text-red-600 hidden"></p>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="dashBox" class="hidden">
+    <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+      <div>
+        <h2 class="font-bold text-lg">📚 Danh sách (<span id="itemCount">0</span> mục)</h2>
+        <p class="text-xs text-slate-500" id="repoInfo"></p>
+      </div>
+      <div class="flex gap-2">
+        <button id="btnReload" class="bg-white border px-3 py-1.5 rounded-lg text-sm hover:bg-slate-50">↻ Tải lại</button>
+        <button id="btnAdd" class="bg-brand-600 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-brand-700">➕ Thêm mục</button>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-3 mb-4 flex flex-col md:flex-row gap-2">
+      <input id="adminQ" placeholder="🔍 Tìm theo tên, tag…" class="flex-1 border rounded-lg px-3 py-2 text-sm">
+      <select id="adminCat" class="border rounded-lg px-3 py-2 text-sm">
+        <option value="">Tất cả danh mục</option>
+      </select>
+    </div>
+
+    <div id="adminList" class="space-y-2"></div>
+  </section>
+
+  <!-- EDITOR MODAL -->
+  <div id="editor" class="fixed inset-0 hidden z-50 modal-backdrop items-start justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-xl max-w-2xl w-full p-6 my-4">
+      <div class="flex justify-between items-center mb-4">
+        <h3 id="edTitle" class="font-bold text-lg">Thêm mục</h3>
+        <button onclick="closeEditor()" class="text-slate-500 hover:text-slate-800">✕</button>
+      </div>
+
+      <div class="space-y-3">
+        <label class="block">
+          <span class="text-sm font-medium">Tiêu đề *</span>
+          <input id="fTitle" class="mt-1 w-full border rounded-lg px-3 py-2">
+        </label>
+        <label class="block">
+          <span class="text-sm font-medium">Danh mục *</span>
+          <select id="fCategory" class="mt-1 w-full border rounded-lg px-3 py-2"></select>
+        </label>
+        <label class="block">
+          <span class="text-sm font-medium">URL *</span>
+          <input id="fUrl" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="https://drive.google.com/… hoặc youtube.com/…">
+          <span id="urlHint" class="text-xs text-slate-500"></span>
+        </label>
+        <label class="block">
+          <span class="text-sm font-medium">Mô tả</span>
+          <textarea id="fDescription" rows="3" class="mt-1 w-full border rounded-lg px-3 py-2"></textarea>
+        </label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="block">
+            <span class="text-sm font-medium">Nguồn (báo/đài)</span>
+            <input id="fSource" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="VTV, Tuổi Trẻ…">
+          </label>
+          <label class="block">
+            <span class="text-sm font-medium">Ngày xuất bản</span>
+            <input id="fPublishedAt" type="date" class="mt-1 w-full border rounded-lg px-3 py-2">
+          </label>
+        </div>
+        <label class="block">
+          <span class="text-sm font-medium">Tags (cách nhau bằng dấu phẩy)</span>
+          <input id="fTags" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="STEM, robotics, B2B">
+        </label>
+        <label class="block">
+          <span class="text-sm font-medium">Thumbnail tuỳ chỉnh (URL)</span>
+          <input id="fThumbnail" class="mt-1 w-full border rounded-lg px-3 py-2" placeholder="Để trống = auto từ YouTube/Drive">
+        </label>
+
+        <div class="grid grid-cols-3 gap-2 pt-2">
+          <label class="flex items-center gap-2 text-sm bg-slate-50 rounded-lg px-3 py-2">
+            <input id="fShowThumb" type="checkbox" checked> Hiện thumbnail
+          </label>
+          <label class="flex items-center gap-2 text-sm bg-slate-50 rounded-lg px-3 py-2">
+            <input id="fPreviewable" type="checkbox" checked> Cho phép preview
+          </label>
+          <label class="flex items-center gap-2 text-sm bg-slate-50 rounded-lg px-3 py-2">
+            <input id="fFeatured" type="checkbox"> ★ Nổi bật
+          </label>
+        </div>
+
+        <div class="flex gap-2 pt-4">
+          <button id="btnSave" class="flex-1 bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700">💾 Lưu</button>
+          <button onclick="closeEditor()" class="px-4 py-2 border rounded-lg hover:bg-slate-50">Huỷ</button>
+        </div>
+        <p id="editorMsg" class="text-sm hidden"></p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="assets/js/app.js"></script>
+<script src="assets/js/admin.js"></script>
+</body>
+</html>

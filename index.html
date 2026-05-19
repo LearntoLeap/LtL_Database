@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LtL Database — Thư viện tài liệu Learn to Leap</title>
+<meta name="description" content="Kho liên kết tài liệu, video, báo chí của Learn to Leap.">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: { 50:'#faf5ff', 100:'#f3e8ff', 500:'#a855f7', 600:'#9333ea', 700:'#7e22ce', 800:'#6b21a8' }
+        }
+      }
+    }
+  }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+<header class="bg-gradient-to-r from-brand-700 to-brand-500 text-white shadow">
+  <div class="max-w-6xl mx-auto px-4 py-5 flex items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold">LtL Database</h1>
+      <p class="text-sm opacity-90">Thư viện liên kết tài liệu của Learn to Leap</p>
+    </div>
+    <a href="admin.html" class="text-sm bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-lg">⚙️ Admin</a>
+  </div>
+</header>
+
+<main class="flex-1 max-w-6xl mx-auto w-full px-4 py-6">
+
+  <!-- Search + filters -->
+  <div class="bg-white rounded-xl shadow-sm p-4 mb-6 flex flex-col md:flex-row gap-3">
+    <input id="q" type="search" placeholder="🔍 Tìm theo tên, tag, nguồn…"
+           class="flex-1 border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500">
+    <select id="catFilter" class="border border-slate-200 rounded-lg px-3 py-2">
+      <option value="">Tất cả danh mục</option>
+    </select>
+    <select id="sortBy" class="border border-slate-200 rounded-lg px-3 py-2">
+      <option value="newest">Mới nhất</option>
+      <option value="title">Theo tên A→Z</option>
+      <option value="featured">Nổi bật trước</option>
+    </select>
+  </div>
+
+  <!-- Category chips -->
+  <div id="catChips" class="flex flex-wrap gap-2 mb-6"></div>
+
+  <!-- Grid -->
+  <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+  <p id="empty" class="hidden text-center text-slate-500 py-10">Không có mục nào phù hợp.</p>
+</main>
+
+<footer class="bg-white border-t border-slate-200 mt-auto">
+  <div class="max-w-6xl mx-auto px-4 py-4 text-xs text-slate-500 flex justify-between">
+    <span>© Learn to Leap — LtL Database</span>
+    <span id="count"></span>
+  </div>
+</footer>
+
+<!-- Preview modal -->
+<div id="preview" class="fixed inset-0 hidden z-50 modal-backdrop items-center justify-center p-4">
+  <div class="bg-white rounded-xl max-w-5xl w-full p-4">
+    <div class="flex justify-between items-center mb-3">
+      <h3 id="pvTitle" class="font-bold text-lg truncate"></h3>
+      <div class="flex gap-2">
+        <a id="pvOpen" target="_blank" class="text-sm bg-brand-600 text-white px-3 py-1.5 rounded-lg hover:bg-brand-700">↗ Mở tab mới</a>
+        <button onclick="closePreview()" class="text-sm bg-slate-200 px-3 py-1.5 rounded-lg hover:bg-slate-300">✕ Đóng</button>
+      </div>
+    </div>
+    <div id="pvBody"></div>
+  </div>
+</div>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>

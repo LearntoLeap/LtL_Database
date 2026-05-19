@@ -1,0 +1,26 @@
+{
+  "categories": [
+    { "id": "drive",   "name": "Google Drive",  "icon": "📁", "description": "Tài liệu, file PDF, slides, sheet trên Drive" },
+    { "id": "youtube", "name": "YouTube",        "icon": "▶️", "description": "Video bài giảng, sự kiện, talkshow" },
+    { "id": "press",   "name": "Báo chí / PR",   "icon": "📰", "description": "Bài báo, phóng sự, truyền thông về LtL" },
+    { "id": "web",     "name": "Website / Khác", "icon": "🔗", "description": "Landing page, microsite, link ngoài" }
+  ],
+  "items": [
+    {
+      "id": "smp001",
+      "title": "Hồ sơ năng lực Learn to Leap (mẫu)",
+      "slug": "ho-so-nang-luc-ltl",
+      "category": "drive",
+      "url": "https://drive.google.com/file/d/1ABCdefGhIJKlmNoPQRstUVwxYZ/view",
+      "description": "Hồ sơ năng lực công ty bản 2026 — dùng để gửi trường, Phòng/Sở GD&ĐT.",
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "tags": ["hồ sơ", "B2B", "trường học"],
+      "source": "Learn to Leap",
+      "publishedAt": "2026-05-01",
+      "createdAt": "2026-05-19",
+      "featured": true
+    }
+  ]
+}
