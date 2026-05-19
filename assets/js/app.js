@@ -190,66 +190,99 @@ function closePreview() {
 }
 window.closePreview = closePreview;
 
-// ============== Sidebar tree ==============
+// ============== Sidebar tree (nested) ==============
+function getChildCats(parentId) {
+  return STATE.data.categories.filter(c => (c.parent || null) === (parentId || null));
+}
+function getDescendantIds(catId) {
+  const out = [catId];
+  const stack = [catId];
+  while (stack.length) {
+    const p = stack.pop();
+    STATE.data.categories.filter(c => c.parent === p).forEach(c => { out.push(c.id); stack.push(c.id); });
+  }
+  return out;
+}
+function cumulativeItemCount(catId) {
+  const ids = new Set(getDescendantIds(catId));
+  return STATE.data.items.filter(i => ids.has(i.category)).length;
+}
+
 function renderTree() {
   const root = document.getElementById('tree');
   if (!root) return;
   root.innerHTML = '';
 
-  // Default: tất cả mở lần đầu
+  // Default: mở tất cả root cats lần đầu
   if (STATE._treeInit !== true) {
-    STATE.data.categories.forEach(c => STATE.openCats.add(c.id));
+    getChildCats(null).forEach(c => STATE.openCats.add(c.id));
     STATE._treeInit = true;
   }
 
-  STATE.data.categories.forEach(c => {
-    const items = STATE.data.items.filter(i => i.category === c.id);
-    const isOpen = STATE.openCats.has(c.id);
-    const folder = document.createElement('div');
-    folder.className = 'mb-1';
-
-    const head = document.createElement('button');
-    head.className = 'w-full flex items-center gap-1 hover:bg-slate-50 rounded px-2 py-1 font-medium text-slate-700';
-    head.innerHTML = `
-      <span class="w-3 text-xs text-slate-400">${isOpen ? '▼' : '▶'}</span>
-      <span>${c.icon || '🔗'}</span>
-      <span class="flex-1 text-left truncate">${escapeHtml(c.name)}</span>
-      <span class="text-xs text-slate-400">${items.length}</span>`;
-    head.onclick = () => {
-      if (STATE.openCats.has(c.id)) STATE.openCats.delete(c.id);
-      else STATE.openCats.add(c.id);
-      renderTree();
-    };
-    folder.appendChild(head);
-
-    if (isOpen) {
-      const ul = document.createElement('div');
-      ul.className = 'ml-5 mt-0.5';
-      if (items.length === 0) {
-        ul.innerHTML = '<p class="text-xs text-slate-400 px-2 py-1">— trống —</p>';
-      }
-      items.forEach(item => {
-        const leaf = document.createElement('div');
-        leaf.className = 'group flex items-center gap-1 hover:bg-slate-50 rounded px-1 py-1';
-        const checked = STATE.selected.has(item.id) ? 'checked' : '';
-        leaf.innerHTML = `
-          <input type="checkbox" class="leaf-cb accent-brand-600" ${checked}>
-          <button class="leaf-title flex-1 text-left truncate text-slate-700 hover:text-brand-700" title="${escapeHtml(item.title)}">📄 ${escapeHtml(item.title)}</button>
-          <button class="leaf-copy opacity-0 group-hover:opacity-100 text-slate-400 hover:text-brand-700 px-1" title="Copy link">📋</button>`;
-        leaf.querySelector('.leaf-cb').onchange = e => {
-          if (e.target.checked) STATE.selected.add(item.id); else STATE.selected.delete(item.id);
-          updateCopyBar();
-        };
-        leaf.querySelector('.leaf-title').onclick = () => openItemFromTree(item);
-        leaf.querySelector('.leaf-copy').onclick = () => copySingleLink(item);
-        ul.appendChild(leaf);
-      });
-      folder.appendChild(ul);
-    }
-    root.appendChild(folder);
-  });
+  const topCats = getChildCats(null);
+  topCats.forEach(c => root.appendChild(renderCatNode(c, 0)));
 
   updateCopyBar();
+}
+
+function renderCatNode(c, depth) {
+  const items = STATE.data.items.filter(i => i.category === c.id);
+  const children = getChildCats(c.id);
+  const total = cumulativeItemCount(c.id);
+  const isOpen = STATE.openCats.has(c.id);
+  const hasContent = items.length > 0 || children.length > 0;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'mb-0.5';
+
+  const head = document.createElement('button');
+  head.className = 'w-full flex items-center gap-1 hover:bg-slate-50 rounded px-2 py-1 font-medium text-slate-700';
+  head.style.paddingLeft = (depth * 12 + 8) + 'px';
+  head.innerHTML = `
+    <span class="w-3 text-xs text-slate-400">${hasContent ? (isOpen ? '▼' : '▶') : '·'}</span>
+    <span>${c.icon || '📁'}</span>
+    <span class="flex-1 text-left truncate">${escapeHtml(c.name)}</span>
+    <span class="text-xs text-slate-400">${total}</span>`;
+  head.onclick = () => {
+    if (STATE.openCats.has(c.id)) STATE.openCats.delete(c.id);
+    else STATE.openCats.add(c.id);
+    renderTree();
+  };
+  wrap.appendChild(head);
+
+  if (isOpen) {
+    // child sub-folders first
+    children.forEach(sc => wrap.appendChild(renderCatNode(sc, depth + 1)));
+
+    // then items of this category
+    if (items.length === 0 && children.length === 0) {
+      const p = document.createElement('p');
+      p.className = 'text-xs text-slate-400 px-2 py-1';
+      p.style.paddingLeft = ((depth + 1) * 12 + 8) + 'px';
+      p.textContent = '— trống —';
+      wrap.appendChild(p);
+    }
+    items.forEach(item => wrap.appendChild(renderLeaf(item, depth + 1)));
+  }
+  return wrap;
+}
+
+function renderLeaf(item, depth) {
+  const leaf = document.createElement('div');
+  leaf.className = 'group flex items-center gap-1 hover:bg-slate-50 rounded px-1 py-1';
+  leaf.style.paddingLeft = (depth * 12 + 8) + 'px';
+  const checked = STATE.selected.has(item.id) ? 'checked' : '';
+  leaf.innerHTML = `
+    <input type="checkbox" class="leaf-cb accent-brand-600" ${checked}>
+    <button class="leaf-title flex-1 text-left truncate text-slate-700 hover:text-brand-700" title="${escapeHtml(item.title)}">📄 ${escapeHtml(item.title)}</button>
+    <button class="leaf-copy opacity-0 group-hover:opacity-100 text-slate-400 hover:text-brand-700 px-1" title="Copy link">📋</button>`;
+  leaf.querySelector('.leaf-cb').onchange = e => {
+    if (e.target.checked) STATE.selected.add(item.id); else STATE.selected.delete(item.id);
+    updateCopyBar();
+  };
+  leaf.querySelector('.leaf-title').onclick = () => openItemFromTree(item);
+  leaf.querySelector('.leaf-copy').onclick = () => copySingleLink(item);
+  return leaf;
 }
 
 function openItemFromTree(item) {
@@ -347,7 +380,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     sb.classList.remove('fixed','inset-0','z-40','bg-slate-900/50','p-4');
   });
   document.getElementById('treeExpandAll').onclick = () => {
-    STATE.data.categories.forEach(c => STATE.openCats.add(c.id));
+    STATE.data.categories.forEach(c => STATE.openCats.add(c.id)); // mọi cấp
     renderTree();
   };
   document.getElementById('treeCollapseAll').onclick = () => {

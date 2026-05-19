@@ -320,43 +320,110 @@ function catUsageCount(catId) {
   return ADMIN.data.items.filter(i => i.category === catId).length;
 }
 
+function getCatDescendants(catId) {
+  const out = new Set([catId]);
+  let added = true;
+  while (added) {
+    added = false;
+    ADMIN.data.categories.forEach(c => {
+      if (c.parent && out.has(c.parent) && !out.has(c.id)) { out.add(c.id); added = true; }
+    });
+  }
+  return out;
+}
+
+function indentedCatLabel(c) {
+  let depth = 0, cur = c;
+  const seen = new Set();
+  while (cur.parent && !seen.has(cur.id)) {
+    seen.add(cur.id);
+    cur = ADMIN.data.categories.find(x => x.id === cur.parent);
+    if (!cur) break;
+    depth++;
+  }
+  return '  '.repeat(depth) + (c.icon || '📁') + ' ' + c.name;
+}
+
+function refreshParentOptions(selectEl, excludeIds = new Set(), selected = '') {
+  selectEl.innerHTML = '<option value="">— Folder gốc —</option>';
+  // Order by tree DFS so options look hierarchical
+  const ordered = [];
+  function walk(parent, depth) {
+    ADMIN.data.categories
+      .filter(c => (c.parent || null) === (parent || null))
+      .forEach(c => { ordered.push({ c, depth }); walk(c.id, depth + 1); });
+  }
+  walk(null, 0);
+  ordered.forEach(({ c, depth }) => {
+    if (excludeIds.has(c.id)) return;
+    const o = document.createElement('option');
+    o.value = c.id;
+    o.textContent = '  '.repeat(depth) + (c.icon || '📁') + ' ' + c.name;
+    if (c.id === selected) o.selected = true;
+    selectEl.appendChild(o);
+  });
+}
+
 function renderCatList() {
   const list = document.getElementById('catList');
   list.innerHTML = '';
   if (!ADMIN.data.categories.length) {
     list.innerHTML = '<p class="text-slate-500 text-sm">Chưa có category nào.</p>';
+    refreshParentOptions(document.getElementById('newCatParent'));
     return;
   }
-  ADMIN.data.categories.forEach((c, idx) => {
+
+  // DFS order so children render under parent
+  const ordered = [];
+  (function walk(parent, depth) {
+    ADMIN.data.categories
+      .filter(c => (c.parent || null) === (parent || null))
+      .forEach(c => { ordered.push({ c, depth }); walk(c.id, depth + 1); });
+  })(null, 0);
+
+  ordered.forEach(({ c, depth }) => {
+    const realIdx = ADMIN.data.categories.indexOf(c);
     const used = catUsageCount(c.id);
     const row = document.createElement('div');
     row.className = 'grid grid-cols-12 gap-2 items-center bg-slate-50 rounded-lg p-2';
+    row.style.marginLeft = (depth * 16) + 'px';
+
+    // Parent select with self+descendants excluded
+    const excl = getCatDescendants(c.id);
     row.innerHTML = `
       <div class="col-span-3 text-xs text-slate-500">
         <code>${escapeHtml(c.id)}</code>
         <span class="ml-1 text-amber-700">${used > 0 ? `· ${used} mục` : ''}</span>
       </div>
-      <input data-i="${idx}" data-k="icon" value="${escapeHtml(c.icon || '')}" class="col-span-1 border rounded px-1.5 py-1 text-sm text-center">
-      <input data-i="${idx}" data-k="name" value="${escapeHtml(c.name || '')}" class="col-span-4 border rounded px-2 py-1 text-sm">
-      <input data-i="${idx}" data-k="description" value="${escapeHtml(c.description || '')}" placeholder="Mô tả" class="col-span-3 border rounded px-2 py-1 text-sm">
-      <div class="col-span-1 flex gap-1 justify-end">
-        <button data-up="${idx}"  class="px-1.5 py-1 border rounded text-xs hover:bg-white" title="Lên">↑</button>
-        <button data-dn="${idx}"  class="px-1.5 py-1 border rounded text-xs hover:bg-white" title="Xuống">↓</button>
-        <button data-del="${idx}" class="px-1.5 py-1 border border-red-200 text-red-600 rounded text-xs hover:bg-red-50" title="Xoá">🗑</button>
-      </div>`;
+      <input data-i="${realIdx}" data-k="icon" value="${escapeHtml(c.icon || '')}" class="col-span-1 border rounded px-1.5 py-1 text-sm text-center">
+      <input data-i="${realIdx}" data-k="name" value="${escapeHtml(c.name || '')}" class="col-span-3 border rounded px-2 py-1 text-sm">
+      <select data-i="${realIdx}" data-k="parent" class="col-span-3 border rounded px-1.5 py-1 text-sm"></select>
+      <div class="col-span-2 flex gap-1 justify-end">
+        <button data-up="${realIdx}"  class="px-1.5 py-1 border rounded text-xs hover:bg-white" title="Lên">↑</button>
+        <button data-dn="${realIdx}"  class="px-1.5 py-1 border rounded text-xs hover:bg-white" title="Xuống">↓</button>
+        <button data-del="${realIdx}" class="px-1.5 py-1 border border-red-200 text-red-600 rounded text-xs hover:bg-red-50" title="Xoá">🗑</button>
+      </div>
+      <input data-i="${realIdx}" data-k="description" value="${escapeHtml(c.description || '')}" placeholder="Mô tả" class="col-span-12 border rounded px-2 py-1 text-sm">`;
+
+    const sel = row.querySelector('select[data-k="parent"]');
+    refreshParentOptions(sel, excl, c.parent || '');
     list.appendChild(row);
   });
 
-  list.querySelectorAll('input[data-i]').forEach(inp => {
+  list.querySelectorAll('input[data-i], select[data-i]').forEach(inp => {
     inp.onchange = async () => {
       const i = +inp.dataset.i, k = inp.dataset.k;
       ADMIN.data.categories[i][k] = inp.value.trim();
       await saveCats(`Update category: ${ADMIN.data.categories[i].id}.${k}`);
+      renderCatList();
     };
   });
   list.querySelectorAll('button[data-up]').forEach(b => b.onclick = () => moveCat(+b.dataset.up, -1));
   list.querySelectorAll('button[data-dn]').forEach(b => b.onclick = () => moveCat(+b.dataset.dn,  1));
   list.querySelectorAll('button[data-del]').forEach(b => b.onclick = () => deleteCat(+b.dataset.del));
+
+  // Refresh "Thêm mới" parent dropdown
+  refreshParentOptions(document.getElementById('newCatParent'));
 }
 
 async function saveCats(msg) {
@@ -410,14 +477,16 @@ async function addCat() {
   const icon = document.getElementById('newCatIcon').value.trim();
   const name = document.getElementById('newCatName').value.trim();
   const desc = document.getElementById('newCatDesc').value.trim();
+  const parent = document.getElementById('newCatParent').value || null;
   if (!id || !name) return setCatMsg('Cần nhập id và tên.', true);
   if (ADMIN.data.categories.find(c => c.id === id)) return setCatMsg('ID đã tồn tại.', true);
-  ADMIN.data.categories.push({ id, name, icon: icon || '🔗', description: desc });
+  ADMIN.data.categories.push({ id, name, icon: icon || '📁', description: desc, parent });
   renderCatList();
   document.getElementById('newCatId').value = '';
   document.getElementById('newCatIcon').value = '';
   document.getElementById('newCatName').value = '';
   document.getElementById('newCatDesc').value = '';
+  document.getElementById('newCatParent').value = '';
   await saveCats('Add category: ' + id);
   setCatMsg('Đã thêm category "' + name + '".', false);
 }
