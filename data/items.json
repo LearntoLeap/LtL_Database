@@ -33,6 +33,26 @@
   ],
   "items": [
     {
+      "title": "Khung chương trình AI uKit cấp Tiểu học",
+      "slug": "khung-chuong-trinh-ai-ukit-cap-tieu-hoc",
+      "category": "drive",
+      "url": "https://drive.google.com/file/d/14utg52JB3DaYBTP_m3KA4vTsgIrQJZrk/view?usp=drive_link",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-19",
+      "tags": [
+        "chuong-trinh",
+        "tih",
+        "ukit"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impcqny1c",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "Khung chương trình UGOT cấp THCS",
       "slug": "khung-chuong-trinh-ugot-cap-thcs",
       "category": "drive",
