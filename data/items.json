@@ -33,6 +33,24 @@
   ],
   "items": [
     {
+      "title": "SaleKits STEM AI 3 cấp",
+      "slug": "salekits-stem-ai-3-cap",
+      "category": "drive",
+      "url": "https://drive.google.com/file/d/1mataxuuNux8rIIdhO-tUr3t9qH08CY-R/view?usp=sharing",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-19",
+      "tags": [
+        "salekit"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impcqpeuo",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "SaleKits Robotics AI Lab theo mô hình XHH",
       "slug": "salekits-robotics-ai-lab-theo-mo-hinh-xhh",
       "category": "drive",
