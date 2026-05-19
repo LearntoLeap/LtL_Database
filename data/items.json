@@ -33,6 +33,24 @@
   ],
   "items": [
     {
+      "title": "Truyền hình Thái Nguyên đưa tin về Sân chơi STEM – AI – Robotics 2026",
+      "slug": "truyen-hinh-thai-nguyen-dua-tin-ve-san-choi-stem-ai-robotics-2026",
+      "category": "youtube",
+      "url": "https://www.youtube.com/watch?v=4cnMue6Bp_Q",
+      "description": "",
+      "source": "YT Learn to Leap",
+      "publishedAt": "2026-02-02",
+      "tags": [
+        "video"
+      ],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impcsw7ij",
+      "createdAt": "2026-05-19"
+    },
+    {
       "title": "TVC Learn to Leap",
       "slug": "tvc-learn-to-leap",
       "category": "youtube",
