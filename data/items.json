@@ -41,7 +41,7 @@
       "id": "ubtech",
       "name": "UBTECH",
       "icon": "📁",
-      "description": "Các dòng robot",
+      "description": "Các dòng robot thuộc UBTECH như uKit, UGOT, Yanshee, ...",
       "parent": "giaiphap"
     }
   ],
