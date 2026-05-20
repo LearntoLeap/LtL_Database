@@ -43,6 +43,13 @@
       "icon": "⚙️",
       "description": "Các dòng robot thuộc UBTECH như uKit, UGOT, Yanshee, ...",
       "parent": "giaiphap"
+    },
+    {
+      "id": "stick-em",
+      "name": "Stick 'Em",
+      "icon": "🎍",
+      "description": "",
+      "parent": "giaiphap"
     }
   ],
   "items": [
