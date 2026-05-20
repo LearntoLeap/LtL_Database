@@ -36,6 +36,13 @@
       "icon": "🤖",
       "description": "Các giải pháp, chương trình LtL đang triển khai",
       "parent": null
+    },
+    {
+      "id": "ubtech",
+      "name": "UBTECH",
+      "icon": "📁",
+      "description": "",
+      "parent": "giaiphap"
     }
   ],
   "items": [
