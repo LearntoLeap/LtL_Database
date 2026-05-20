@@ -29,6 +29,13 @@
       "name": "Pháp lý",
       "icon": "🧾",
       "description": "Giấy tờ Pháp lý của LTL"
+    },
+    {
+      "id": "giaiphap",
+      "name": "Giải pháp",
+      "icon": "🤖",
+      "description": "",
+      "parent": null
     }
   ],
   "items": [
