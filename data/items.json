@@ -50,6 +50,13 @@
       "icon": "🎍",
       "description": "",
       "parent": "giaiphap"
+    },
+    {
+      "id": "robogmb",
+      "name": "RoboG Miền Bắc",
+      "icon": "📁",
+      "description": "",
+      "parent": null
     }
   ],
   "items": [
