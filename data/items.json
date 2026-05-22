@@ -61,6 +61,22 @@
   ],
   "items": [
     {
+      "title": "Checklist  Hậu cần",
+      "slug": "checklist-hau-can",
+      "category": "robogmb",
+      "url": "https://docs.google.com/spreadsheets/d/1SSEgp0hRJ4nJ_1TBVYn616zylWyL_uD8fAwgS5IopJY/edit?gid=1753124168#gid=1753124168",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-22",
+      "tags": [],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impgfy6is",
+      "createdAt": "2026-05-22"
+    },
+    {
       "title": "Danh sách khách mời",
       "slug": "danh-sach-khach-moi",
       "category": "robogmb",
