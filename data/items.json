@@ -61,6 +61,22 @@
   ],
   "items": [
     {
+      "title": "Danh sách khách mời",
+      "slug": "danh-sach-khach-moi",
+      "category": "robogmb",
+      "url": "https://docs.google.com/spreadsheets/d/1cz-J9AeZHnVpno0scmHqCxLzq9hH3yX9/edit?usp=sharing&ouid=113597930588225891133&rtpof=true&sd=true",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-22",
+      "tags": [],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impgbif3m",
+      "createdAt": "2026-05-22"
+    },
+    {
       "title": "Kịch bản",
       "slug": "kich-ban",
       "category": "robogmb",
