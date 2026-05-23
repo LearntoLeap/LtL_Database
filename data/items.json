@@ -61,6 +61,22 @@
   ],
   "items": [
     {
+      "title": "Link Event nhạc",
+      "slug": "link-event-nhac",
+      "category": "drive",
+      "url": "https://drive.google.com/drive/folders/1sooFmnES_HzfnMdnuwKutsyimww27daA",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-23",
+      "tags": [],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impi2ze1l",
+      "createdAt": "2026-05-23"
+    },
+    {
       "title": "Dự trù Kinh phí In ấn",
       "slug": "du-tru-kinh-phi-in-an",
       "category": "robogmb",
