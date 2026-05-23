@@ -57,6 +57,13 @@
       "icon": "",
       "description": "",
       "parent": null
+    },
+    {
+      "id": "event",
+      "name": "Event",
+      "icon": "📁",
+      "description": "",
+      "parent": null
     }
   ],
   "items": [
