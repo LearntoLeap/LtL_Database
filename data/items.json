@@ -64,6 +64,13 @@
       "icon": "📁",
       "description": "",
       "parent": null
+    },
+    {
+      "id": "identity",
+      "name": "Bộ nhận diện",
+      "icon": "📁",
+      "description": "",
+      "parent": null
     }
   ],
   "items": [
