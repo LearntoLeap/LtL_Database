@@ -68,6 +68,22 @@
   ],
   "items": [
     {
+      "title": "Trailer Chung kết RoboG",
+      "slug": "trailer-chung-ket-robog",
+      "category": "drive",
+      "url": "https://drive.google.com/file/d/1gbjmuAIojjSZr9FD4VR_SFZLKZ2ARORU/view?usp=sharing",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-23",
+      "tags": [],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impiediff",
+      "createdAt": "2026-05-23"
+    },
+    {
       "title": "Layout",
       "slug": "layout",
       "category": "robogmb",
