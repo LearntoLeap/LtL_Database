@@ -75,6 +75,22 @@
   ],
   "items": [
     {
+      "title": "Logo",
+      "slug": "logo",
+      "category": "drive",
+      "url": "https://drive.google.com/drive/folders/14j3qPx0BNu__L2syoRVfB31LcewcEbNo?usp=sharing",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-23",
+      "tags": [],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impiefp1m",
+      "createdAt": "2026-05-23"
+    },
+    {
       "title": "Video TVC Giới thiệu Learn to Leap",
       "slug": "video-tvc-gioi-thieu-learn-to-leap",
       "category": "drive",
