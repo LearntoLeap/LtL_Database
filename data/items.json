@@ -61,6 +61,22 @@
   ],
   "items": [
     {
+      "title": "Layout",
+      "slug": "layout",
+      "category": "robogmb",
+      "url": "https://drive.google.com/file/d/1e28XEk8irQ5eaVbhNM0PIC5RIvC53xlt/view?usp=drive_link",
+      "description": "",
+      "source": "",
+      "publishedAt": "2026-05-23",
+      "tags": [],
+      "thumbnail": "",
+      "showThumbnail": true,
+      "previewable": true,
+      "featured": false,
+      "id": "impi3yydr",
+      "createdAt": "2026-05-23"
+    },
+    {
       "title": "Link Event nhạc",
       "slug": "link-event-nhac",
       "category": "drive",
