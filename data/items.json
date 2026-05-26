@@ -71,6 +71,13 @@
       "icon": "🟪",
       "description": "",
       "parent": null
+    },
+    {
+      "id": "pr-robogmb",
+      "name": "PR RoboG Miền Bắc 2026",
+      "icon": "🗞️",
+      "description": "",
+      "parent": "press"
     }
   ],
   "items": [
