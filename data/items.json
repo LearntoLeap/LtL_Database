@@ -78,6 +78,13 @@
       "icon": "🗞️",
       "description": "",
       "parent": "press"
+    },
+    {
+      "id": "pr-trai-nghiem",
+      "name": "Ngày hội Trải nghiệm",
+      "icon": "📁",
+      "description": "",
+      "parent": "press"
     }
   ],
   "items": [
