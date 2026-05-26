@@ -85,6 +85,13 @@
       "icon": "📁",
       "description": "",
       "parent": "press"
+    },
+    {
+      "id": "pr-sanchoi-thainguyen",
+      "name": "PR Sân chơi Thái Nguyên 2026",
+      "icon": "📁",
+      "description": "",
+      "parent": "press"
     }
   ],
   "items": [
