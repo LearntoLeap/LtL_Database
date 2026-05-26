@@ -92,6 +92,13 @@
       "icon": "📁",
       "description": "",
       "parent": "press"
+    },
+    {
+      "id": "pr-ltl",
+      "name": "PR Learn to Leap",
+      "icon": "📁",
+      "description": "",
+      "parent": "press"
     }
   ],
   "items": [
